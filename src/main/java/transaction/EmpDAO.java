@@ -28,36 +28,36 @@ public class EmpDAO  {
 		//test4 : test3부분 없애고 xml 설정 따름. 305, 306(이메일은 동일하게 넣자)
 		// "insert1 ok" 출력되지만 실제로 insert안됨(롤백되어서)
 		
-		try{
-		EmpVO vo1 = new EmpVO();
-		vo1.setEmployee_id(304);
-		vo1.setLast_name("김");
-		vo1.setEmail("kim_email5@mail.com");
-		vo1.setJob_id("IT_PROG");
-		vo1.setDepartment_id(80);
-		sqlSession.insert("transaction.insertEmp", vo1);
-		System.out.println("===========insert1 ok=========");
-		
-		EmpVO vo2 = new EmpVO();
-		vo2.setEmployee_id(304);
-		vo2.setLast_name("박");
-		vo2.setEmail("park_email6@mail.com");
-		vo2.setJob_id("IT_PROG");
-		vo2.setDepartment_id(90);
-		sqlSession.insert("transaction.insertEmp", vo2);
-		System.out.println("===========insert2 ok=========");
-		//����Ȯ���� �� 
-		
-		}catch(Exception e){
-			//==없애자
-			//try{
-			//	sqlSession.getConnection().rollback();
-			//}catch(Exception e2){}
-			//==없애자
-			System.out.println("예외발생");
-			throw e;
-		}
-		
+//		try{
+//		EmpVO vo1 = new EmpVO();
+//		vo1.setEmployee_id(304);
+//		vo1.setLast_name("김");
+//		vo1.setEmail("kim_email5@mail.com");
+//		vo1.setJob_id("IT_PROG");
+//		vo1.setDepartment_id(80);
+//		sqlSession.insert("transaction.insertEmp", vo1);
+//		System.out.println("===========insert1 ok=========");
+//		
+//		EmpVO vo2 = new EmpVO();
+//		vo2.setEmployee_id(304);
+//		vo2.setLast_name("박");
+//		vo2.setEmail("park_email6@mail.com");
+//		vo2.setJob_id("IT_PROG");
+//		vo2.setDepartment_id(90);
+//		sqlSession.insert("transaction.insertEmp", vo2);
+//		System.out.println("===========insert2 ok=========");
+//		//����Ȯ���� �� 
+//		
+//		}catch(Exception e){
+//			//==없애자
+//			//try{
+//			//	sqlSession.getConnection().rollback();
+//			//}catch(Exception e2){}
+//			//==없애자
+//			System.out.println("예외발생");
+//			throw e;
+//		}
+//		
 		List<EmpVO> list = sqlSession.selectList("transaction.one", 304);
 		System.out.println("----------------------------------------------------------------");
 		for (EmpVO vo : list)

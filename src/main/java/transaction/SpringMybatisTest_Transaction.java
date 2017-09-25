@@ -17,7 +17,7 @@ public static void main(String[] args) {
 
 	List<EmpVO> list = service.getEmpList();
 
-	System.out.println("test555");
+	System.out.println("test666");
 	for(int i = 0; i < list.size(); i++){
 		EmpVO vo2 = list.get(i);
 		System.out.println(vo2.getEmployee_id() + " / " + vo2.getLast_name()

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http:mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- dynamic.all -->
+
+<mapper namespace="dynamic">
+<sql id="select-emp" >
+	select * from employees
+</sql>
+
+<sql id="where-id" >
+	where employee_id >= #{value_id}
+</sql>
+
+<sql id="order-id" >
+	order by id desc
+</sql>
+
+<select id="getEmpReuse" parameterType="int" resultType="empvo" >
+ <include refid="select-emp"  />
+ <include refid="where-id"  />
+</select>
+
+<select id="getEmpReuse2" resultType="empvo" >
+ <include refid="select-emp"  />
+ <include refid="order-id"  />
+</select>
+<!--  test.empVOMAP -->
+<select id="getEmpDynamicWhere" resultMap="test.empVOMAP"
+parameterType="empvo" >
+SELECT * FROM EMPLOYEES
+<where>
+	<if test="name == null">
+		salary is null
+	</if>
+	<if test="name != null">
+		first_name=#{name}
+	</if>
+</where>
+</select>
+
+<update id="updateEmp" parameterType="empvo" >
+update employees
+<set>
+<if test="name != null"> first_name=#{name}, </if> 
+<if test="email != null"> email=#{email}, </if> 
+<if test="salary != 0"> salary=#{salary}, </if> 
+</set>
+where employee_id = #{id}
+</update>
+
+<sql id="where-id-collection">
+ where employee_id between
+ <foreach item="item" collection="array" separator="and" >
+ 	#{item} 
+ </foreach>
+</sql>
+
+<!-- parameterType="int[]"  빼도 실행 가능(오라클만???)-->
+<select id="getEmpReuseCollection" 
+resultMap="test.empVOMAP">
+select * from employees
+<include refid="where-id-collection" />
+</select>
+
+ <select id="getEmpReuseCollection2" 
+parameterType="java.util.List" 
+resultMap="test.empVOMAP">
+select * from employees where 
+JOB_ID IN 
+	<foreach collection="list" item="job" 
+	open="("  separator=","  close=")">
+	#{job}
+	</foreach> 
+</select> 
+
+
+<select id="getEmpRownum"  parameterType="int[]"
+resultMap="test.empVOMAP" >
+select employee_id, hire_date
+from (select rownum r, employee_id, hire_date
+		from (select employee_id, hire_date
+			  from employees
+			  order by hire_date desc)
+	)
+where r between
+<foreach collection="array" item="r" separator="and">
+ #{r}
+</foreach>
+</select> 
+</mapper>
+
+
+
+
+
+
+

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+<!-- 1.spring datasource 설정 -->
+<bean id="dataSource"
+class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<property name="driverClassName" 
+	value="oracle.jdbc.driver.OracleDriver" />
+	<property name="url" 
+	value="jdbc:oracle:thin:@127.0.0.1:1521:xe" />
+	<property name="username" value="hr" />
+	<property name="password" value="hr" />		
+</bean>
+<!-- 2. SqlSessionFactory 생성 -->
+<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" >
+	<property name="dataSource" ref="dataSource" />
+	<property name="configLocation" 
+	value="/WEB-INF/spring/configuration.xml" />
+ 	<property name="mapperLocations"
+	value="/WEB-INF/spring/*-mapper.xml" />	 
+</bean>
+<!--5. mapper사용시-->
+<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="sqlSessionFactory" 
+	ref="sqlSessionFactory"/>
+	<property name="mapperInterface" 
+	value="mvc.spring.mybatis.mapper.EmpMapper">
+	</property>
+</bean>
+<!-- 3. MyBatis SqlSession 생성 == spring SqlSessionTemplate-->
+<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+ <constructor-arg ref="sqlSessionFactory" />
+</bean>
+<!--4. annotation ;servlet-context.xml로 이동
+(또는 양쪽 모두 설정해도 무방
+현재 mvc관련 annoation 제외한 것만 SCAN, mvc 에서는 @Controller annotation 추가.
+DispatcherServet 동작 이후 @Controller, @RequestMapping 등 annotation 찾음-->
+ <context:component-scan base-package="mvc.spring.mybatis" />
+ </beans>

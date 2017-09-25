@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+<!-- 1.타입 alias 설정 :선택적 -->
+<typeAliases>
+	<typeAlias alias="empvo" type="mvc.spring.mybatis.EmpVO" />
+</typeAliases>
+<!-- 3.mapper파일 설정:src기준으로 파일 경로 인식하므로 /web-inf 인식불가  -->
+<mappers>
+<!--  	<mapper resource="/WEB-INF/spring/test-mapper.xml" />
+	<mapper resource="/WEB-INF/spring/dynamic-mapper.xml" /> -->
+</mappers>
+</configuration>
+
+
+

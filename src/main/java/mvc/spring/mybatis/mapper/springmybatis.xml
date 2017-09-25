@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans 
+xmlns="http://www.springframework.org/schema/beans" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:context="http://www.springframework.org/schema/context" 
+xsi:schemaLocation="http://www.springframework.org/schema/beans 
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+<!-- annotation @...찾아라  -->
+ <context:component-scan base-package="mvc.spring.mybatiss" /> 
+
+
+<!-- 2. db연결설정정보 입력 객체 
+configuration.xml 설정 이동
+-->
+<bean id="dataSource"  
+class=
+"org.springframework.jdbc.datasource.DriverManagerDataSource" >
+			<property name="driverClassName"
+value="oracle.jdbc.driver.OracleDriver" />
+			<property name="url"
+value="jdbc:oracle:thin:@localhost:1521:xe" />
+			<property name="username" value="hr" />
+			<property name="password" value="hr" />
+</bean>
+<!-- 3. -->
+<bean id="sqlSessionFactory" 
+class="org.mybatis.spring.SqlSessionFactoryBean" >
+	<property name="dataSource" ref="dataSource"/>
+<!-- 	<property name="configLocation" 
+	value="mvc/spring/mybatis/mapper/configuration.xml"/> -->
+<!-- 	<property name="mapperLocations" 
+	value="springmybatisannotation/mapping.xml"/>  -->
+</bean>
+
+<!--5. mapper사용시-->
+<bean class=
+"org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="sqlSessionFactory" 
+	ref="sqlSessionFactory"/>
+	<property name="mapperInterface" 
+	value="mvc.spring.mybatis.mapper.EmpMapper">
+	</property>
+</bean>
+
+<!-- 4. -->
+<bean id="sqlSessionTemplate" 
+class="org.mybatis.spring.SqlSessionTemplate" >
+	<constructor-arg ref="sqlSessionFactory"/>
+</bean>
+</beans>
+

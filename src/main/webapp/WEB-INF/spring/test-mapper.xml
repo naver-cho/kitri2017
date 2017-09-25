@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http:mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- test.all -->
+
+<mapper namespace="test">
+
+	<resultMap id="empVOMAP" type="mvc.spring.mybatis.EmpVO" >
+	<!-- empVOMAP객체식별자=DB PK 
+	오라클 + 모든 db: -->
+		<id property="id" column="employee_id" javaType="int" />
+		<result property="name" column="first_name||'-'||last_name" />
+<!-- 		<result property="email" column="email" />
+		<result property="hire_date" 
+		column="to_char(hire_date, 'yyyy:mm:dd')||'-' "
+		javaType="string" /> 			
+		<result property="job_id" column="job_id" />
+		<result property="salary" column="salary" /> -->	
+	</resultMap>
+
+	<select id="allByResultMap" resultMap="empVOMAP">
+		select employee_id, 
+		first_name,
+		first_name||'-'||last_name,
+		department_id,
+		to_char(hire_date, 'yyyy:mm:dd'),
+		job_id, hire_date from employees
+	</select>	
+	
+	<select id="all" resultType="mvc.spring.mybatis.EmpVO">
+		select employee_id id, 
+		first_name ||':'||last_name name,
+		department_id,
+		job_id, to_char(hire_date, 'yy-mm-dd') hire_date from employees
+	</select>
+<!-- test.one -->
+	<select id="one" parameterType="int" resultMap="empVOMAP">
+		select employee_id, first_name||'-'||last_name,
+		department_id,
+		job_id, to_char(hire_date, 'yy-mm-dd') hire_date 
+		from employees
+		where employee_id = #{id}
+	</select>
+	
+	<!-- 
+	EmpVO vo = new EmpVO();
+	vo.setEmployee_id(200);
+	
+	 -->
+	<select id="oneEmpVO" resultType="empvo">
+		select employee_id, first_name,department_id,
+		job_id, to_char(hire_date, 'yy-mm-dd') hire_date 
+		from employees
+		where employee_id=#{employee_id}
+	</select>	
+	
+	<insert id="insertEmp" parameterType="empvo"><!-- mybatis.EmpVO  -->
+	insert into employees values
+	(#{id}, #{name}, '성',
+	#{email}, '010-222-3333', sysdate,
+	#{job_id}, #{salary}, null,
+	200 , 80 )
+	</insert>
+
+	<insert id="insertEmpWithSelectKey" parameterType="empvo">
+		<selectKey keyProperty="employee_id" 
+		resultType="int" order="BEFORE" >
+			select emp_id_seq.nextval from dual
+		</selectKey>
+	insert into employees values
+	(#{employee_id}, #{first_name}, #{last_name},
+	#{email}, #{phone_number}, sysdate,
+	#{job_id}, #{salary}, #{commission_pct},
+	#{manager_id},#{department_id} )
+	</insert>
+		
+	<!-- 500 80 IT_PROG : 500인 사번의 사원의 부서 80번, 직종 IT_PROG 변경-->
+	<update id="updateEmp" parameterType="empvo" >
+	update employees
+	set department_id=#{department_id}  , job_id=#{job_id}
+	where employee_id=#{employee_id}
+	</update>
+	
+	<!-- 500 : 사번 500번 사원 삭제 -->
+	<delete id="deleteEmp" parameterType="int">
+	delete employees where employee_id=#{i}
+	</delete>
+		
+</mapper>

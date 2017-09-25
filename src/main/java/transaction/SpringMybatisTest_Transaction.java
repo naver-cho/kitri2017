@@ -7,17 +7,18 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class SpringMybatisTest_Transaction {
 public static void main(String[] args) {
-//1. spring bean ¼³Á¤ ÆÄÀÏ ÀÐ¾î¶ó
+//1. spring bean ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ð¾ï¿½ï¿½
 	ApplicationContext factory
 	= new ClassPathXmlApplicationContext
 	("transaction/springbean_transaction.xml");
 	
-//2. ¼­ºñ½º°´Ã¼ ¾ò¾î¿Í¶ó
-//spring-serviceÀÎÅÍÆäÀÌ½º/serviceImpl»ó¼Ó/dao/vo/db	
+//2. ï¿½ï¿½ï¿½ñ½º°ï¿½Ã¼ ï¿½ï¿½ï¿½Í¶ï¿½
+//spring-serviceï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½/serviceImplï¿½ï¿½ï¿½/dao/vo/db	
 	EmpService service = (EmpService)factory.getBean("empService");
-//3.¼­ºñ½º°´Ã¼ : ¸ðµç ¸â¹ö Á¶È¸ mybatis ¿¬µ¿
+//3.ï¿½ï¿½ï¿½ñ½º°ï¿½Ã¼ : ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½È¸ mybatis ï¿½ï¿½ï¿½ï¿½
 	List<EmpVO> list = service.getEmpList();
-//4.Ãâ·Â	
+//4.ï¿½ï¿½ï¿½	
+	System.out.println("test");
 	for(int i = 0; i < list.size(); i++){
 		EmpVO vo2 = list.get(i);
 		System.out.println(vo2.getEmployee_id() + " / " + vo2.getLast_name()

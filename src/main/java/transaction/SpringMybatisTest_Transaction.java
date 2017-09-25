@@ -18,7 +18,7 @@ public static void main(String[] args) {
 //3.���񽺰�ü : ��� ��� ��ȸ mybatis ����
 	List<EmpVO> list = service.getEmpList();
 //4.���	
-	System.out.println("test111");
+	System.out.println("test222");
 	for(int i = 0; i < list.size(); i++){
 		EmpVO vo2 = list.get(i);
 		System.out.println(vo2.getEmployee_id() + " / " + vo2.getLast_name()
